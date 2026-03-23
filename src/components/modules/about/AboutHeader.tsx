@@ -1,3 +1,7 @@
+
+
 export default function AboutHeader() {
-  return <div>AboutHeader</div>;
+  return (
+    <div>AboutHeader</div>
+  )
 }
