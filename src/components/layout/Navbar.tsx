@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Link } from "react-router";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -19,6 +20,8 @@ const navigationLinks = [
   { href: "#", label: "Pricing" },
   { href: "#", label: "About" },
 ];
+
+
 
 export default function Navbar() {
   return (
@@ -106,7 +109,7 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <Button asChild className="text-sm" size="sm" variant="ghost">
-            <a href="#">Sign In</a>
+            <Link to={"login"}>Sign In</Link>
           </Button>
           <Button asChild className="text-sm" size="sm">
             <a href="#">Get Started</a>
