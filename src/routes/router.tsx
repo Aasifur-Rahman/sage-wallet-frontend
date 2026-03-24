@@ -1,9 +1,10 @@
 import App from "@/App";
 import About from "@/pages/About";
-import login from "@/pages/Login";
+import Login from "@/pages/login";
  
 
 import { createBrowserRouter } from "react-router";
+
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
 
   },
   {
-        Component: login ,
+        Component: Login ,
         path: "login"
       }
 ]);

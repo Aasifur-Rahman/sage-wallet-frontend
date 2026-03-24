@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/card"
 import {
   Field,
-  FieldDescription,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Form } from "react-hook-form"
 
 export function LoginForm({
   className,
@@ -29,14 +29,15 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
-            <FieldGroup className="space-y-4">
-              <Field>
+          <Form>
+            <form className="space-y-4">
+            <FieldGroup className="space-y-2">
+              <Field >
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="sage@example.com"
                   required
                 />
               </Field>
@@ -96,6 +97,7 @@ export function LoginForm({
               </a>
             </p>
           </form>
+          </Form>
         </CardContent>
       </Card>
     </div>
