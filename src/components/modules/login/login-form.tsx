@@ -1,3 +1,7 @@
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,14 +15,37 @@ import {
   Field,
   FieldGroup,
   FieldLabel,
+  FieldError,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Form } from "react-hook-form"
+
+const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+})
+
+type LoginFormData = z.infer<typeof loginSchema>
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
+
+  function onSubmit(data: LoginFormData) {
+    console.log("Login submitted:", data)
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="border-0 bg-transparent shadow-none">
@@ -29,17 +56,18 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form>
-            <form className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <FieldGroup className="space-y-2">
-              <Field >
+              <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   placeholder="sage@example.com"
-                  required
+                  {...register("email")}
+                  aria-invalid={!!errors.email}
                 />
+                <FieldError errors={errors.email ? [{ message: errors.email.message }] : []} />
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -51,11 +79,17 @@ export function LoginForm({
                     Forgot password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  {...register("password")}
+                  aria-invalid={!!errors.password}
+                />
+                <FieldError errors={errors.password ? [{ message: errors.password.message }] : []} />
               </Field>
             </FieldGroup>
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full text-foreground" disabled={isSubmitting}>
               Sign in
             </Button>
 
@@ -64,7 +98,7 @@ export function LoginForm({
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-card rounded bg-muted px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 
@@ -97,7 +131,6 @@ export function LoginForm({
               </a>
             </p>
           </form>
-          </Form>
         </CardContent>
       </Card>
     </div>

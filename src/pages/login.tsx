@@ -4,7 +4,7 @@ import { LoginForm } from "@/components/modules/login/login-form";
 
 export default function Login() {
   return (
-    <div className="relative flex min-h-svh w-full items-center justify-center overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-100 p-6 md:p-10">
+    <div className="relative flex min-h-svh w-full items-center justify-center overflow-hidden p-6 md:p-10">
       {/* Subtle grid pattern */}
       <div
         className="absolute inset-0 z-0"
