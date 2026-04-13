@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/modules/login/login-form";
+import { LoginForm } from "@/components/modules/login/LoginForm";
 
 
 

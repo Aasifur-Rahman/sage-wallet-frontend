@@ -1,6 +1,4 @@
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
+import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -11,40 +9,50 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
 import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-  FieldError,
-} from "@/components/ui/field"
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input"
+import { Link } from "react-router";
 
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-})
+// import { useNavigate } from "react-router"
 
-type LoginFormData = z.infer<typeof loginSchema>
+
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  })
 
-  function onSubmit(data: LoginFormData) {
-    console.log("Login submitted:", data)
-  }
+  // const navigate  = useNavigate()
+  const form = useForm()
+  // const [login] = useLoginMutation
+  
+ 
+ const onSubmit: SubmitHandler<FieldValues> = (data) => {
+
+  console.log(data)
+
+  //  try {
+  //   const res = await login(data).unwrap();
+  //   console.log(res)
+  //  } catch (error) {
+  //   console.log(error)
+
+  //   if (error.status === 401) {
+  //     toast.error("Your account is not verified");
+  //     navigate
+  //   }
+
+  //  }
+ }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -56,53 +64,67 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <FieldGroup className="space-y-2">
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField control={form.control} 
+            name="email" 
+              render={({field}) => (
+                <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
                   placeholder="sage@example.com"
-                  {...register("email")}
-                  aria-invalid={!!errors.email}
+                  {...field}
+                  value={field.value || ""}
+                
                 />
-                <FieldError errors={errors.email ? [{ message: errors.email.message }] : []} />
-              </Field>
-              <Field>
+                </FormControl>
+                <FormMessage/>
+              </FormItem>
+              )}
+            />
+              
+              
+           
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                 
+                <FormLabel >Password</FormLabel>
+
                   <a
                     href="#"
                     className="ml-auto text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
                   >
                     Forgot password?
                   </a>
+                  
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  {...register("password")}
-                  aria-invalid={!!errors.password}
-                />
-                <FieldError errors={errors.password ? [{ message: errors.password.message }] : []} />
-              </Field>
-            </FieldGroup>
+                 <FormField control={form.control} name="password" render={({field}) => (
+                <FormItem>
+                    
+                    <FormControl>
+                      <Input type="password" placeholder="******" {...field} value={field.value || ""}/>
+                    </FormControl>
+                </FormItem>
+              )}/>
+              
+           
 
-            <Button type="submit" className="w-full text-foreground" disabled={isSubmitting}>
+            <Button type="submit" className="w-full text-foreground" >
               Sign in
             </Button>
+             </form>
+          </Form>
 
             <div className="relative my-2">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
+              <div className="relative flex justify-center text-xs uppercase mt-6">
                 <span className="bg-card rounded bg-muted px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 
-            <Button variant="outline" type="button" className="w-full">
+            <Button variant="outline" type="button" className="w-full mt-4">
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -126,11 +148,11 @@ export function LoginForm({
 
             <p className="text-center text-xs text-muted-foreground">
               Don&apos;t have an account?{" "}
-              <a href="#" className="text-primary underline-offset-4 hover:underline">
+              <Link to="/register" className="text-primary underline-offset-4 hover:underline">
                 Sign up
-              </a>
+              </Link>
             </p>
-          </form>
+         
         </CardContent>
       </Card>
     </div>
